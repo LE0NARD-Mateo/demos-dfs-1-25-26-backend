@@ -1,0 +1,16 @@
+{
+  "name": "demos-dfs-1-25-26-backend",
+  "version": "1.0.0",
+  "description": "backend du projet angulat demo dfs 1 24/25",
+  "license": "ISC",
+  "author": "franck bansept",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "cors": "^2.8.6"
+  }
+}
