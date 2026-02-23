@@ -2,6 +2,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const jwtUtils = require("jsonwebtoken");
 
 
 const app = express();
@@ -29,6 +30,45 @@ const categories = [
 
 app.use(cors());
 app.use(bodyParser.json());
+
+const utilisateurs = [
+  { email: "a@a.com", password: "root", admin: true },
+  { email: "b@b.com", password: "root", admin: false },
+];
+
+app.post("/inscription", (req, res) => {
+
+  //TODO : valider les données + hacher le mot de passe + si l'email est unique
+
+  const nouvelUtilisateur = req.body;
+
+  //on force le droit de l'utilisateur à ne pas être un admin
+  nouvelUtilisateur.admin = false;
+
+  utilisateurs.push(nouvelUtilisateur);
+
+  res.status(201).json({ message: "Utilisateur ajoutée avec succès" });
+
+})
+
+app.post("/connexion", (req, res) => {
+
+  const utilisateur = req.body;
+
+  //note : en cas de mot de passe hasher on devrait utiliser une methode comme bcrypt pour vérifier 
+  // la compatibilité du mot de passe en clair avec le mot de passe hashé
+  if(utilisateurs.find((u) => u.email === utilisateur.email && u.password === utilisateur.password)) {
+
+    const jwt = jwtUtils.sign({ sub: utilisateur.email }, "azerty");
+
+    return res.json({jwt});
+  }
+
+  return res.status(401).send();
+ 
+});
+
+
 
 app.get("/categories", (req, res) => {
   res.json(categories);
