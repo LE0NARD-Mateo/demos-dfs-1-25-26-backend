@@ -55,6 +55,22 @@ app.post("/image", (req, res) => {
     return res.status(400).json({ message: "L'URL de l'image est mal formée" });
   }
 
+  //on vérifie que l'url n'est pas déjà présente dans les catégories
+  // const urlDejaPresente = categories.some((cat) =>
+  //   cat.images.some((img) => img === url),
+  // );
+
+  for(let categorie of categories) {
+    for (let image of categorie.images) {
+      if(image === url) {
+        return res
+          .status(409)
+          .json({ message: "L'URL existe déjà" });
+      }
+    }
+  }
+
+
   //a remplacer par une requete insert dans une BDD
   categories[0].images.push(url);
 
